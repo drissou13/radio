@@ -1,0 +1,129 @@
+/* style.css */
+
+/* Thème Jour (par défaut) */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.radio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.radio-item {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+}
+
+.radio-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.radio-item img {
+    width: 100%;
+    height: auto;
+}
+
+.radio-item p {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Bouton changement thème */
+.theme-switcher {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#theme-toggle {
+    background-color: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+#theme-toggle:hover {
+    background-color: #e6b800;
+}
+
+/* Lecteur flottant */
+.player-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 1s ease;
+    z-index: 1000;
+}
+
+.player-floating:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+audio {
+    height: 30px;
+}
+
+.current-radio {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Thème Nuit */
+body.night-mode {
+    background-color: #333;
+    color: #f7f7f7;
+}
+
+body.night-mode h1 {
+    color: #f7f7f7;
+}
+
+body.night-mode .radio-item {
+    background-color: #444;
+    color: #f7f7f7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.night-mode .radio-item img {
+    filter: brightness(0.7);
+}
+
+body.night-mode
