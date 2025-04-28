@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur Radio Mosaïque</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .radio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .radio-item {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        .radio-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .radio-item img {
+            width: 100%;
+            height: auto;
+        }
+        .radio-item p {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffcc00;
+            border-radius: 50%;
+            padding: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        /* Lecteur flottant */
+        .player-floating {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 1s ease;
+            z-index: 1000;
+        }
+        .player-floating:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        audio {
+            height: 30px;
+        }
+        .current-radio {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎵 Mosaïque Radio - Lecteur en ligne</h1>
+
+    <div class="radio-grid" id="radioGrid">
+        <!-- Radios générées par JS -->
+    </div>
+
+    <!-- Lecteur flottant -->
+    <div class="player-floating" id="floatingPlayer">
+        <div class="current-radio" id="currentRadio">Choisissez une radio</div>
+        <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <script>
+        const radios = [
+            {
+                name: "NRJ",
+                stream: "https://scdn.nrjaudio.fm/fr/30001/mp3_128.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0c/NRJ_logo_2014.svg/200px-NRJ_logo_2014.svg.png"
+            },
+            {
+                name: "Skyrock",
+                stream: "https://icecast.skyrock.net/s/natio_mp3_128k",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/7/7e/Skyrock_2014_logo.svg/200px-Skyrock_2014_logo.svg.png"
+            },
+            {
+                name: "Fun Radio",
+                stream: "https://stream.funradio.fr/fun-1-44-128",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/e/ef/Fun_Radio_2015.svg/200px-Fun_Radio_2015.svg.png"
+            },
+            {
+                name: "Radio FG",
+                stream: "https://radiofg.impek.com/fg",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/c/ca/Radio_FG_logo_2018.svg/200px-Radio_FG_logo_2018.svg.png"
+            },
+            {
+                name: "Virgin Radio",
+                stream: "https://ais-live.cloud-services.paris:8443/virginradio.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/0/0d/Virgin_Radio_logo_2018.svg/200px-Virgin_Radio_logo_2018.svg.png"
+            },
+            {
+                name: "RFM",
+                stream: "https://rfm-live-mp3-128.scdn.arkena.com/rfm.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/d/d7/RFM_logo_2014.svg/200px-RFM_logo_2014.svg.png"
+            },
+            {
+                name: "Nostalgie",
+                stream: "https://nostalgie.ice.infomaniak.ch/nostalgie-high.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/9/97/Nostalgie_logo_2015.svg/200px-Nostalgie_logo_2015.svg.png"
+            },
+            {
+                name: "RTL2",
+                stream: "https://streaming.radio.rtl2.fr/rtl2-1-44-128",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/3/30/RTL2.svg/200px-RTL2.svg.png"
+            },
+            {
+                name: "Chérie FM",
+                stream: "https://scdn.nrjaudio.fm/fr/30201/mp3_128.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/2/2f/Ch%C3%A9rie_FM_logo_2012.svg/200px-Ch%C3%A9rie_FM_logo_2012.svg.png"
+            },
+            {
+                name: "M Radio",
+                stream: "https://mfm.ice.infomaniak.ch/mfm-128.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/0/03/MFM_Radio_2016_logo.svg/200px-MFM_Radio_2016_logo.svg.png"
+            },
+            {
+                name: "France Inter",
+                stream: "https://icecast.radiofrance.fr/franceinter-midfi.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/9/9d/France_Inter_2016.svg/200px-France_Inter_2016.svg.png"
+            },
+            {
+                name: "France Info",
+                stream: "https://icecast.radiofrance.fr/franceinfo-midfi.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/3/3b/France_Info_2016.svg/200px-France_Info_2016.svg.png"
+            },
+            {
+                name: "France Bleu",
+                stream: "https://icecast.radiofrance.fr/francebleu-midfi.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/f/f0/France_Bleu_logo_2015.svg/200px-France_Bleu_logo_2015.svg.png"
+            },
+            {
+                name: "FIP",
+                stream: "https://icecast.radiofrance.fr/fip-midfi.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/6/6a/Logo_FIP.svg/200px-Logo_FIP.svg.png"
+            },
+            {
+                name: "Rire et Chansons",
+                stream: "https://scdn.nrjaudio.fm/fr/30401/mp3_128.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/7/77/Rire_%26_Chansons_logo_2015.svg/200px-Rire_%26_Chansons_logo_2015.svg.png"
+            },
+            {
+                name: "Rire et Chansons Sketchs",
+                stream: "https://scdn.nrjaudio.fm/fr/30075/mp3_128.mp3",
+                logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/7/77/Rire_%26_Chansons_logo_2015.svg/200px-Rire_%26_Chansons_logo_2015.svg.png",
+                favorite: true // Marqué comme favori
+            }
+        ];
+
+        const radioGrid = document.getElementById('radioGrid');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const currentRadio = document.getElementById('currentRadio');
+
+        radios.forEach(radio => {
+            const div = document.createElement('div');
+            div.className = 'radio-item';
+            if (radio.favorite) {
+                div.innerHTML = `<span class="favorite">⭐</span><img src="${radio.logo}" alt="${radio.name}"><p>${radio.name}</p>`;
+            } else {
+                div.innerHTML = `<img src="${radio.logo}" alt="${radio.name}"><p>${radio.name}</p>`;
+            }
+            div.addEventListener('click', () => {
+                audioPlayer.src = radio.stream;
+                audioPlayer.play();
+                currentRadio.textContent = radio.name;
+            });
+            radioGrid.appendChild(div);
+        });
+    </script>
+
+</body>
+</html>
