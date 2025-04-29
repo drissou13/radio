@@ -148,3 +148,46 @@ body.night-mode .radio-item img {
 }
 
 body.night-mode
+.radio-item::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.radio-item {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.radio-item.glow::before {
+  animation: glowPulse 2s infinite;
+  opacity: 1;
+}
+
+@keyframes glowPulse {
+  0% {
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  }
+  50% {
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+  }
+  100% {
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+  }
+}
+
