@@ -56,19 +56,15 @@
             font-size: 14px;
         }
         /* Lecteur flottant */
-        .player-floating {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ffffff;
-            border-radius: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: fadeIn 1s ease;
-            z-index: 1000;
+        <div class="player-floating" id="floatingPlayer">
+  <div class="current-radio" id="currentRadio">
+    <span id="radioName">Choisissez une radio</span>
+    <span id="liveBadge" class="live-badge hidden">🔴 LIVE</span>
+  </div>
+  <audio id="audioPlayer" controls></audio>
+  <button id="stopButton" class="stop-btn">⏹️ Stop</button>
+</div>
+
         }
         .player-floating:hover {
             transform: scale(1.05);
