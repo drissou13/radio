@@ -99,9 +99,13 @@
 
     <!-- Lecteur flottant -->
     <div class="player-floating" id="floatingPlayer">
-        <div class="current-radio" id="currentRadio">Choisissez une radio</div>
-        <audio id="audioPlayer" controls></audio>
-    </div>
+  <div class="current-radio" id="currentRadio">
+    <span id="radioName">Choisissez une radio</span>
+    <span id="liveBadge" class="live-badge hidden">🔴 LIVE</span>
+  </div>
+  <audio id="audioPlayer" controls></audio>
+</div>
+
 
     <script>
         const radios = [
