@@ -27,12 +27,31 @@ if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
   document.getElementById("liveBadge").classList.remove("hidden");
 }
 function stopRadio() {
+  function playRadio(radio) {
   const player = document.getElementById("audioPlayer");
-  player.pause();
-  player.src = "";
+  player.src = radio.stream;
+  player.play();
 
-  document.getElementById("radioName").textContent = "Choisissez une radio";
-  document.getElementById("liveBadge").classList.add("hidden");
+  // Affiche le lecteur flottant
+  document.getElementById("floatingPlayer").style.display = "flex";
+  document.getElementById("radioName").textContent = radio.name;
+  document.getElementById("liveBadge").classList.remove("hidden");
+
+  // Supprimer l'effet "glow" de toutes les radios
+  const cards = document.querySelectorAll(".radio-item");
+  cards.forEach(card => card.classList.remove("glow"));
+
+  // Trouver la carte correspondant à la radio choisie
+  const selectedCard = Array.from(cards).find(card =>
+    card.querySelector("p").textContent === radio.name
+  );
+
+  // Appliquer l'effet "glow" uniquement sur cette radio
+  if (selectedCard) {
+    selectedCard.classList.add("glow");
+  }
+}
+
 }
 
 }
