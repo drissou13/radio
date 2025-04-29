@@ -55,3 +55,7 @@ function stopRadio() {
 }
 
 }
+// Vérifier l'état de toutes les radios
+radios.forEach(radio => {
+  checkRadioStatus(radio);
+});
