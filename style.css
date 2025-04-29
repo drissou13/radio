@@ -190,4 +190,19 @@ body.night-mode
     background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
   }
 }
+.stop-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.stop-btn:hover {
+  background-color: #c82333;
+}
 
