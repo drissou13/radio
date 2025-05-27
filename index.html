@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> </title>
-    <style>
+    <style><script>
+  // Appliquer le thème automatiquement selon l'heure
+  const heure = new Date().getHours();
+
+  if (heure >= 19 || heure < 7) {
+    document.body.classList.add('night-mode');
+  } else {
+    document.body.classList.remove('night-mode');
+  }
+</script>
+
         body {
             font-family: Arial, sans-serif;
             background: #f7f7f7;
